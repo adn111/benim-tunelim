@@ -1,6 +1,8 @@
 const WebSocket = require('ws');
 const http = require('http');
-
+const server = http.createServer((req, res) => {
+    res.writeHead(200);
+    res.end('Snapchat_Service_Check_OK'); 
 const server = http.createServer((req, res) => {
     res.writeHead(200);
     res.end('System Online');
