@@ -1,20 +1,23 @@
-const WebSocket = require('ws');
 const http = require('http');
+const WebSocket = require('ws');
+
 const server = http.createServer((req, res) => {
-    res.writeHead(200);
-    res.end('Snapchat_Service_Check_OK'); 
-const server = http.createServer((req, res) => {
-    res.writeHead(200);
-    res.end('System Online');
+    if (req.url === '/') {
+        res.writeHead(200);
+        res.end('Server is Live');
+    }
 });
 
-const wss = new WebSocket.Server({ server });
+const wss = new WebSocket.Server({ noServer: true });
+
+server.on('upgrade', (request, socket, head) => {
+    wss.handleUpgrade(request, socket, head, (ws) => {
+        wss.emit('connection', ws, request);
+    });
+});
 
 wss.on('connection', (ws) => {
     ws.on('message', (data) => {
-        // Turkcell engeline takılmayan veri akışı
-    });
-    ws.on('error', () => {});
-});
 
-server.listen(process.env.PORT || 3000);
+    });
+});
